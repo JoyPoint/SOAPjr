@@ -1,0 +1,20 @@
+Revision history for SOAPjr
+
+1.0.0   30 Nov 2008
+        - Added basic documentation, ran perltidy and small changes to pass perlcritic then released first full version to CPAN.
+
+0.4.0   27 Nov 2008
+        - Refactored param handling to support %param has as provided by CGI.pm's :cgi-lib ->Vars and removed SOAPjr::request::process().
+
+0.3.0   24 Nov 2008
+        - Changed inheritance model to make all modules extend SOAPjr::base.
+
+0.2.0   16 Nov 2008
+        - Updated to support latest version of JSON.pm and added callback support.
+
+0.1.0   15 Nov 2008
+        - First version, released on an unsuspecting world.
+
+0.0.0   June 2005
+        - This model has been under development at MOB (http://MobileOnlineBusiness.com.au) since mid 2005.
+        - This included contributions from Rob Manson, Sean McCarthy and Ryan Kirkland
