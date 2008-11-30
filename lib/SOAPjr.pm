@@ -17,7 +17,7 @@ Version 1.0.0
 
 =cut
 
-our $VERSION = "1.0.0";
+our $VERSION = "1.0.1";
 
 =head1 SYNOPSIS
 
@@ -36,7 +36,7 @@ our $VERSION = "1.0.0";
 
     # - create the SOAPjr server object
     # NOTE: This is the equivalent of jquery on the client side and may be created in the apache perl_startup.pl script so it's persistent
-    my $SOAPjr_server = SOAPjr->new($options);
+    my $server = SOAPjr->new($options);
     
     # 1. Receive request message
     # - your perl script is called either directly or as a handler
@@ -44,10 +44,10 @@ our $VERSION = "1.0.0";
 
     # 2. Validate request message
     # - create the inbound request object for this request
-    my $SOAPjr_request = $SOAPjr_server->create_request(@_, { OPTIONS => { "option1" => "AAA" } });
+    my $request = $server->create_request(@_, { OPTIONS => { "option1" => "AAA" } });
     
     # - set any settings for this inbound request object
-    $SOAPjr_request->set({ OPTIONS => { "..." => "..." } });
+    $request->set({ OPTIONS => { "..." => "..." } });
     
     # 3. Process request message
     # This is where your development implementation happens
@@ -56,15 +56,15 @@ our $VERSION = "1.0.0";
     
     # 4. Create response message
     # - then when you're ready you create a response object
-    my $SOAPjr_response = $self->create_response({ ENVELOPE => { "option1" => "XXX" } });
+    my $response = $self->create_response({ ENVELOPE => { "option1" => "XXX" } });
     
     # 5. Configure response message
     # - then set any of the response values
-    $SOAPjr_response->set({ HEAD => { "option1" => "DDD" }, BODY => { "option1" => "LLL" } });
+    $response->set({ HEAD => { "option1" => "DDD" }, BODY => { "option1" => "LLL" } });
     
     # 6. Send response message 
     # - then when you're done you send back your response
-    my $send_result = $SOAPjr_response->send({ HEAD => { "option1" => "DDD" }, BODY => { "option1" => "LLL" } });
+    my $send_result = $response->send({ HEAD => { "option1" => "DDD" }, BODY => { "option1" => "LLL" } });
 
 =head1 FUNCTIONS
 
@@ -83,7 +83,7 @@ sub _init {
 
 =head2 create_request 
 
-Public method to enable the creation of a SOAPjr_request object.
+Public method to enable the creation of a SOAPjr request object.
 
 =cut
 
@@ -96,7 +96,7 @@ sub create_request {
 
 =head2 create_response
 
-Public method to enable the creation of a SOAPjr_response object.
+Public method to enable the creation of a SOAPjr response object.
 
 =cut
 
@@ -130,7 +130,7 @@ You can also look for information at:
 
 =over 4
 
-=item * RT: SOAPjr.org 
+=item * SOAPjr.org 
 
 L<http://SOAPjr.org>
 
@@ -155,6 +155,8 @@ L<http://search.cpan.org/dist/SOAPjr/>
 =head1 TODO
 
 Need to write t/ tests and add detailed documentation then replace t/pod-coverage.t.
+
+Need to add more utility methods for generating/handling errors in reponse objects.
 
 Also need to create Server and Client modules ala JSON::RPC and more detailed example scripts.
 

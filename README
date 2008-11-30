@@ -85,6 +85,8 @@ TODO
 
 Need to write t/ tests and add detailed documentation then replace t/pod-coverage.t.
 
+Need to add more utility methods for generating/handling errors in reponse objects.
+
 Also need to create Server and Client modules ala JSON::RPC and more detailed example scripts.
 
 
