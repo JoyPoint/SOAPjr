@@ -13,11 +13,11 @@ SOAPjr - the love child of SOAP and JR (JSON-RPC)
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.2
 
 =cut
 
-our $VERSION = "1.0.1";
+our $VERSION = "1.0.2";
 
 =head1 SYNOPSIS
 
@@ -44,7 +44,7 @@ our $VERSION = "1.0.1";
 
     # 2. Validate request message
     # - create the inbound request object for this request
-    my $request = $server->create_request(@_, { OPTIONS => { "option1" => "AAA" } });
+    my $request = $server->create_request($query_params_hashref, \%ENV);
     
     # - set any settings for this inbound request object
     $request->set({ OPTIONS => { "..." => "..." } });
@@ -90,7 +90,7 @@ Public method to enable the creation of a SOAPjr request object.
 sub create_request {
     my $self           = shift;
     my $query          = shift;
-    my $SOAPjr_request = SOAPjr::request->new( $self, $query );
+    my $SOAPjr_request = SOAPjr::request->new($self, $query, @_);
     return $SOAPjr_request;
 }
 
@@ -102,7 +102,7 @@ Public method to enable the creation of a SOAPjr response object.
 
 sub create_response {
     my $self            = shift;
-    my $SOAPjr_response = SOAPjr::response->new();
+    my $SOAPjr_response = SOAPjr::response->new(@_);
     return $SOAPjr_response;
 }
 

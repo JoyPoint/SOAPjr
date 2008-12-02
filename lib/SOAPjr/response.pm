@@ -9,11 +9,11 @@ SOAPjr::response - the SOAPjr response object
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.2
 
 =cut
 
-our $VERSION = "1.0.1";
+our $VERSION = "1.0.2";
 
 =head1 SYNOPSIS
 
@@ -25,7 +25,12 @@ use base qw(SOAPjr::message);
 
 sub _init {
     my $self = shift;
-    return $self->SUPER::_init(@_);
+    my $config= shift;
+    $self = $self->SUPER::_init(@_);
+    if ($config) {
+        my $update_count = $self->set($config);
+    } 
+    return $self;
 }
 
 sub send {

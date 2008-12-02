@@ -1,5 +1,9 @@
 Revision history for SOAPjr
 
+1.0.2   2 Dec 2008
+        - Updated SOAPjr::request, SOAPjr::response and SOAPjr to tidy up the _init chain
+        - Updated the pod in SOAPjr to make SOAPjr::create_request correct
+
 1.0.1   30 Nov 2008
         - Added PREREQ_PM reference to JSON in Makefile.PL - thanks to the ever vigilant cpan.testers 8)
         - Removed overly enthusiastic use of the term SOAPjr in the SOAPjr.pm pod 8)
