@@ -63,6 +63,16 @@ perldoc command.
 
     perldoc SOAPjr
 
+
+You can quickly create jQuery clients that speak SOAPjr using these:
+
+    SOAPjr plugin
+        http://plugins.jquery.com/project/SOAPjr
+
+    Valid JSON plugin
+        http://plugins.jquery.com/project/JSONSchemaValidator
+
+
 You can also look for information at:
 
     SOAPjr.org
@@ -84,8 +94,6 @@ You can also look for information at:
 TODO
 
 Need to write t/ tests and add detailed documentation then replace t/pod-coverage.t.
-
-Need to add more utility methods for generating/handling errors in reponse objects.
 
 Also need to create Server and Client modules ala JSON::RPC and more detailed example scripts.
 

@@ -9,11 +9,11 @@ SOAPjr::response - the SOAPjr response object
 
 =head1 VERSION
 
-Version 1.0.2
+Version 1.1.0
 
 =cut
 
-our $VERSION = "1.0.2";
+our $VERSION = "1.1.0";
 
 =head1 SYNOPSIS
 
@@ -22,6 +22,7 @@ our $VERSION = "1.0.2";
 =cut
 
 use base qw(SOAPjr::message);
+use Carp;
 
 sub _init {
     my $self = shift;
@@ -33,19 +34,49 @@ sub _init {
     return $self;
 }
 
-sub send {
+sub add_error {
+    my $self = shift;
+    my $error = shift;
+    if (!$error->{property} && !$error->{error}->{code} && !$error->{error}->{message}) {
+        carp "property and an error with { code => NNN, message => xxx } is required for response::add_message()";
+        return 0;
+    } else {
+        if (!$error->{context}) {
+            $error->{context} = "BODY";
+        }
+        if (!$self->{_data}->{HEAD}->{errors}) {
+            $self->{_data}->{HEAD}->{errors} = {};
+        }
+        $self->{_data}->{HEAD}->{errors}->{$error->{context}}->{$error->{property}} = $error->{error};
+        return $self->output();
+    }
+}
+
+sub output {
     my $self = shift;
     my $json;
+    my $body = $self->get("BODY");
+    if ($self->get("HEAD")->{errors}) {
+        $self->set({ HEAD => { "result" => 0 } });
+        $body = {};
+    } else {
+        $self->set({ HEAD => { "result" => 1 } });
+    }
     if ($self->{json}->can("encode")) {
         # Modern-ish 2.x JSON API
-        $json = $self->{json}->encode( { HEAD => $self->get("HEAD"), BODY => $self->get("BODY") } );
+        $json = $self->{json}->encode( { HEAD => $self->get("HEAD"), BODY => $body } );
     } elsif ($self->{json}->can("objToJson")) {
         # Olde Version 1.x JSON API
-        $json = $self->{json}->objToJson( { HEAD => $self->get("HEAD"), BODY => $self->get("BODY") } );
+        $json = $self->{json}->objToJson( { HEAD => $self->get("HEAD"), BODY => $body } );
     } else {
         # TODO: handle unknown JSON API
     }
-    print $json;
+    return $json;
+}
+
+sub send {
+    my $self = shift;
+    print $self->output();
     return 1;
 }
 
@@ -73,7 +104,7 @@ You can also look for information at:
 
 =over 4
 
-=item * RT: SOAPjr.org 
+=item * SOAPjr.org 
 
 L<http://SOAPjr.org>
 

@@ -13,11 +13,11 @@ SOAPjr - the love child of SOAP and JR (JSON-RPC)
 
 =head1 VERSION
 
-Version 1.0.2
+Version 1.1.0
 
 =cut
 
-our $VERSION = "1.0.2";
+our $VERSION = "1.1.0";
 
 =head1 SYNOPSIS
 
@@ -61,10 +61,24 @@ our $VERSION = "1.0.2";
     # 5. Configure response message
     # - then set any of the response values
     $response->set({ HEAD => { "option1" => "DDD" }, BODY => { "option1" => "LLL" } });
+
+    # 6. Add any errors you need to
+    # - if your processing of $request creates any errors then just add them with $response->add_error()
+    # e.g. 
+    # $s = $r->add_error({
+    #     context => "HEAD",
+    #     property => "sid",
+    #         error => {
+    #         code => 401,
+    #         message => "Invalid session ID"
+    #     }
+    # });
+    # NOTE: $s (e.g. the return of add_error()) is a serialised_string of the current object after the error is added
     
-    # 6. Send response message 
+    # 7. Send response message 
     # - then when you're done you send back your response
     my $send_result = $response->send({ HEAD => { "option1" => "DDD" }, BODY => { "option1" => "LLL" } });
+    # or you can just get a serialised string of the object at any time using $response->output();
 
 =head1 FUNCTIONS
 
@@ -155,8 +169,6 @@ L<http://search.cpan.org/dist/SOAPjr/>
 =head1 TODO
 
 Need to write t/ tests and add detailed documentation then replace t/pod-coverage.t.
-
-Need to add more utility methods for generating/handling errors in reponse objects.
 
 Also need to create Server and Client modules ala JSON::RPC and more detailed example scripts.
 

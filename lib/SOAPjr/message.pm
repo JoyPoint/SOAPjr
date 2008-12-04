@@ -9,11 +9,11 @@ SOAPjr::message - base class for SOAPjr::request and SOAPjr::response objects
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = "1.0.0";
+our $VERSION = "1.0.1";
 
 =head1 SYNOPSIS
 
@@ -54,7 +54,7 @@ You can also look for information at:
 
 =over 4
 
-=item * RT: SOAPjr.org 
+=item * SOAPjr.org 
 
 L<http://SOAPjr.org>
 

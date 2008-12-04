@@ -9,11 +9,11 @@ SOAPjr::request - the SOAPjr request object
 
 =head1 VERSION
 
-Version 1.0.1
+Version 1.0.2
 
 =cut
 
-our $VERSION = "1.0.1";
+our $VERSION = "1.0.2";
 
 =head1 SYNOPSIS
 
@@ -22,6 +22,7 @@ our $VERSION = "1.0.1";
 =cut
 
 use base qw(SOAPjr::message);
+use Carp;
 
 sub _init {
     my $self = shift;
@@ -50,16 +51,13 @@ sub set {
         if ( $json->{HEAD} ) {
             $self->{_data}->{HEAD} = $json->{HEAD};
         } else {
-
-            # TODO: set "HEAD MISSING" error
+            carp "WARNING: HEAD missing";
         }
         if ( $json->{BODY} ) {
             $self->{_data}->{BODY} = $json->{BODY};
         } else {
-
-            # TODO: set "BODY MISSING" error
+            carp "WARNING: BODY missing";
         }
-
         # TODO: what about json_type
     }
     return $self->SUPER::set( $query, $count );
@@ -89,7 +87,7 @@ You can also look for information at:
 
 =over 4
 
-=item * RT: SOAPjr.org 
+=item * SOAPjr.org 
 
 L<http://SOAPjr.org>
 

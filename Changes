@@ -1,5 +1,13 @@
 Revision history for SOAPjr
 
+1.1.0   4 Dec 2008
+        - Added SOAPjr::response::add_error() utility method that expects a property, optional context (defaults to BODY) and an error { code => NNN, message => blah }
+        - Updated SOAPjr::response::output() to it automatically sets HEAD.result if HEAD.errors have been set
+        - Updated pod in SOAPjr to reflect these changes, along with some other minor pod edits
+        - Added the use of Carp for warning about missing params, etc.
+        - Separated SOAPjr::response::send() - output() returns the serialised object and send() calls output() and prints what's returned
+        - Updated SOAPjr::base::set() to differentiate between HASHes (an additive set) and other (a replacement set)
+
 1.0.2   2 Dec 2008
         - Updated SOAPjr::request, SOAPjr::response and SOAPjr to tidy up the _init chain
         - Updated the pod in SOAPjr to make SOAPjr::create_request correct
