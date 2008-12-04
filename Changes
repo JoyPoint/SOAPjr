@@ -1,5 +1,8 @@
 Revision history for SOAPjr
 
+1.1.2   5 Dec 2008
+        - Having a really bad day 8( 
+
 1.1.1   5 Dec 2008
         - Oops...took out stoopid !'s on SOAPjr::response::add_error() - don't know what I was thinking
 

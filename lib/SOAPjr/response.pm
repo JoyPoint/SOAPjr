@@ -9,11 +9,11 @@ SOAPjr::response - the SOAPjr response object
 
 =head1 VERSION
 
-Version 1.1.1
+Version 1.1.2
 
 =cut
 
-our $VERSION = "1.1.1";
+our $VERSION = "1.1.2";
 
 =head1 SYNOPSIS
 
@@ -37,7 +37,7 @@ sub _init {
 sub add_error {
     my $self = shift;
     my $error = shift;
-    if (!$error->{property} && !$error->{error}->{code} && !$error->{error}->{message}) {
+    if ($error->{property} && $error->{error}->{code} && $error->{error}->{message}) {
         if (!$error->{context}) {
             $error->{context} = "BODY";
         }
