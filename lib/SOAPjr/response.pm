@@ -9,11 +9,11 @@ SOAPjr::response - the SOAPjr response object
 
 =head1 VERSION
 
-Version 1.1.0
+Version 1.1.1
 
 =cut
 
-our $VERSION = "1.1.0";
+our $VERSION = "1.1.1";
 
 =head1 SYNOPSIS
 
@@ -38,9 +38,6 @@ sub add_error {
     my $self = shift;
     my $error = shift;
     if (!$error->{property} && !$error->{error}->{code} && !$error->{error}->{message}) {
-        carp "property and an error with { code => NNN, message => xxx } is required for response::add_message()";
-        return 0;
-    } else {
         if (!$error->{context}) {
             $error->{context} = "BODY";
         }
@@ -49,6 +46,9 @@ sub add_error {
         }
         $self->{_data}->{HEAD}->{errors}->{$error->{context}}->{$error->{property}} = $error->{error};
         return $self->output();
+    } else {
+        carp "property and an error with { code => NNN, message => xxx } is required for response::add_message()";
+        return 0;
     }
 }
 

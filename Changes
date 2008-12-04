@@ -1,5 +1,8 @@
 Revision history for SOAPjr
 
+1.1.1   5 Dec 2008
+        - Oops...took out stoopid !'s on SOAPjr::response::add_error() - don't know what I was thinking
+
 1.1.0   4 Dec 2008
         - Added SOAPjr::response::add_error() utility method that expects a property, optional context (defaults to BODY) and an error { code => NNN, message => blah }
         - Updated SOAPjr::response::output() to it automatically sets HEAD.result if HEAD.errors have been set
