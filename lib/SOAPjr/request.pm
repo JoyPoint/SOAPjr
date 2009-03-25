@@ -2,6 +2,10 @@ package SOAPjr::request;
 
 use strict;
 use warnings;
+use File::Basename;
+use File::Temp;
+use File::Copy;
+use URI::Escape;
 
 =head1 NAME
 
@@ -9,11 +13,11 @@ SOAPjr::request - the SOAPjr request object
 
 =head1 VERSION
 
-Version 1.0.2
+Version 1.0.3
 
 =cut
 
-our $VERSION = "1.0.2";
+our $VERSION = "1.0.3";
 
 =head1 SYNOPSIS
 
@@ -36,30 +40,64 @@ sub _init {
 sub set {
     my $self  = shift;
     my $query = shift;
+    my $cgi_query;
     my $count = 0;
     my $json;
-    if ( $query->{params} && $query->{params}->{json} ) {
-        if ($self->{json}->can("decode")) {
-            # Modern-ish 2.x JSON API
-            $json = $self->{json}->decode( $query->{params}->{json} );
-        } elsif ($self->{json}->can("jsonToObj")) {
-            # Olde Version 1.x JSON API
-            $json = $self->{json}->jsonToObj( $query->{params}->{json} );
-        } else {
-            # TODO: handle unknown JSON API
-        }
-        if ( $json->{HEAD} ) {
-            $self->{_data}->{HEAD} = $json->{HEAD};
-        } else {
-            carp "WARNING: HEAD missing";
-        }
-        if ( $json->{BODY} ) {
-            $self->{_data}->{BODY} = $json->{BODY};
-        } else {
-            carp "WARNING: BODY missing";
-        }
-        # TODO: what about json_type
+    if (ref($query) ne 'HASH' && $query->can("param")) {
+        # Make a copy
+        $cgi_query = $query;
+        my @names = $query->param;
+        my %params = ( map { $_ => $query->param($_) } @names );
+        $query = { params => \%params };
     }
+    if (exists $query->{params}) {
+        if (exists $query->{params}->{json} ) {
+            my $url_decoded_json = uri_unescape($query->{params}->{json});
+            if ($self->{json}->can("decode")) {
+                # Modern-ish 2.x JSON API
+                $json = $self->{json}->decode( $url_decoded_json );
+            } elsif ($self->{json}->can("jsonToObj")) {
+                # Olde Version 1.x JSON API
+                $json = $self->{json}->jsonToObj( $url_decoded_json );
+            } else {
+                # TODO: handle unknown JSON API
+                carp "WARNING: unknown JSON API";
+            }
+            if ( $json->{HEAD} ) {
+                $self->{_data}->{HEAD} = $json->{HEAD};
+            } else {
+                carp "WARNING: HEAD missing";
+            }
+            if ( $json->{BODY} ) {
+                $self->{_data}->{BODY} = $json->{BODY};
+            } else {
+                carp "WARNING: BODY missing";
+            }
+            # TODO: what about json_type
+
+            # Check for "RELATED" components
+            if (exists $json->{HEAD}->{related}) {
+                while (my ($k, $v) = each %{$json->{HEAD}->{related}}) {
+                    # TODO: handle other types of related content
+                    next unless ($v eq 'binary');
+                    # Append file data
+                    unless ($cgi_query) {
+                        carp "WARNING: related item is a file but query not a CGI object";
+                    }
+                    my $filename = $cgi_query->param($k);
+                    my $fh = $cgi_query->upload($k);
+                    # Save CGI tmp file into our own tmp file (for lifecycle 
+                    # reasons)
+                    my $tmp_fh = File::Temp->new(UNLINK => 0);
+                    my $tmp_file = $tmp_fh->filename;
+                    copy ($fh, $tmp_file) or die $!;
+                    close $tmp_fh;
+                    $self->{_data}->{BODY}->{$k}->{filepath} = $tmp_file;
+                }
+            }
+        }
+    }
+
     return $self->SUPER::set( $query, $count );
 }
 

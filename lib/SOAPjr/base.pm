@@ -22,6 +22,7 @@ our $VERSION = "1.0.1";
 =cut
 
 use JSON;
+$JSON::UnMapping = 1;
 
 sub new {
     my $self  = {};

@@ -9,15 +9,15 @@ use SOAPjr::response;
 
 =head1 NAME
 
-SOAPjr - the love child of SOAP and JR (JSON-RPC)
+SOAPjr - SOAP without the bloat and JR (JSON-RPC) with proper error handling and file uploads
 
 =head1 VERSION
 
-Version 1.1.2
+Version 1.1.4
 
 =cut
 
-our $VERSION = "1.1.2";
+our $VERSION = "1.1.4";
 
 =head1 SYNOPSIS
 

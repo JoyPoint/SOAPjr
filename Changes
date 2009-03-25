@@ -1,5 +1,16 @@
 Revision history for SOAPjr
 
+1.1.4   26 Feb 2009
+        - URL decoding json on incoming request
+        - Added implicit "UnMapping" so that null json values become plain
+          undef values in the Perl hash.
+        - Unpack CGI requests a little better in SOAPjr::request
+        - Small bug fix in handling file (related) components in SOAPjr::request
+
+1.1.3   6 Jan 2009
+        - Added basic handling of "related" components in SOAPjr::request, but
+          (binary) file types only at present
+
 1.1.2   5 Dec 2008
         - Having a really bad day 8( 
 
